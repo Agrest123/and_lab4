@@ -17,10 +17,10 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<String> target;
-//    private ArrayAdapter adapter;
+   //private ArrayAdapter adapter;
     private SimpleCursorAdapter adapter;
 
-    MySQLite db;
+   public MySQLite db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +34,14 @@ public class MainActivity extends AppCompatActivity {
         this.target = new ArrayList<String>();
         this.target.addAll(Arrays.asList(values));
 
-//        this.adapter = new ArrayAdapter(this,
-//                android.R.layout.simple_list_item_1,this.target);
+       /* this.adapter = new ArrayAdapter(this,
+              android.R.layout.simple_list_item_1,this.target);*/
 
 
-        this.adapter = new SimpleCursorAdapter(
-                this, android.R.layout.simple_list_item_2,
+        this.adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2,
                 db.lista(),
                 new String[] {"_id", "gatunek"},
-                new int[] {android.R.id.text1,
-                        android.R.id.text2},
+                new int[] {android.R.id.text1, android.R.id.text2},
 
                 SimpleCursorAdapter.IGNORE_ITEM_VIEW_TYPE
         );
@@ -68,17 +66,20 @@ public class MainActivity extends AppCompatActivity {
     {
         if(requestCode==1 && resultCode==RESULT_OK)
         {
-            Bundle extras = data.getExtras();
-            String nowy = (String)extras.get("wpis");
+          Bundle extras = data.getExtras();
+           /* String nowy = (String)extras.get("wpis");
             target.add(nowy);
+            adapter.notifyDataSetChanged();*/
+            Animal nowy = (Animal)extras.getSerializable("nowy");
+            this.db.dodaj(nowy);
+            adapter.changeCursor(db.lista());
             adapter.notifyDataSetChanged();
         }
     }
 
     public void nowyWpis(MenuItem mi)
     {
-        Intent intencja = new Intent(this,
-                DodajWpis.class);
+        Intent intencja = new Intent(this, DodajWpis.class);
         startActivityForResult(intencja, 1);
     }
 
