@@ -47,6 +47,19 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onActivityResult(
+            int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode==1 && resultCode==RESULT_OK)
+        {
+            Bundle extras = data.getExtras();
+            String nowy = (String)extras.get("wpis");
+            target.add(nowy);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     public void nowyWpis(MenuItem mi)
     {
         Intent intencja = new Intent(this,
